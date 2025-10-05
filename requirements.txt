@@ -1,14 +1,33 @@
+# Core FastAPI and server
 fastapi==0.104.1
 uvicorn[standard]==0.24.0
 pydantic==2.5.0
 pydantic-settings==2.1.0
 python-dotenv==1.0.0
+
+# Database connections
 neo4j==5.15.0
 chromadb==0.4.18
+pinecone-client==2.2.4
+
+# AI and ML
 sentence-transformers==2.2.2
-google-generativeai==0.3.2
+google-genai
 numpy==1.24.3
+torch>=1.13.0
+transformers>=4.21.0
+
+# NLP Processing
+spacy==3.7.2
+
+# HTTP and async
+httpx==0.25.2
+aiofiles==23.2.1
+
+# Testing (optional for production)
 pytest==7.4.3
 pytest-asyncio==0.21.1
-httpx==0.25.2
-spacy==3.7.2
+
+# Production utilities
+gunicorn==21.2.0
+python-multipart==0.0.6
