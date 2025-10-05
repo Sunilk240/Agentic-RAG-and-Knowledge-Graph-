@@ -1,0 +1,153 @@
+{
+  "domain_type": "technical_documentation",
+  "name": "Technical Documentation",
+  "description": "Schema for technical documentation, API docs, and software development content",
+  "entity_types": [
+    "technology",
+    "concept",
+    "document",
+    "organization"
+  ],
+  "entity_patterns": [
+    {
+      "name": "programming_language",
+      "pattern": "\\b(?:Python|Java|JavaScript|TypeScript|C\\+\\+|C#|Go|Rust|Ruby|PHP|Swift|Kotlin|Scala|R|MATLAB|SQL|HTML|CSS)\\b",
+      "entity_type": "technology",
+      "confidence": 0.9,
+      "flags": 2,
+      "description": "Programming languages and markup languages",
+      "examples": ["Python", "JavaScript", "C++"]
+    },
+    {
+      "name": "framework_library",
+      "pattern": "\\b(?:React|Angular|Vue\\.js|Django|Flask|Spring|Express\\.js|Node\\.js|TensorFlow|PyTorch|Pandas|NumPy|jQuery|Bootstrap)\\b",
+      "entity_type": "technology",
+      "confidence": 0.9,
+      "flags": 2,
+      "description": "Software frameworks and libraries",
+      "examples": ["React", "Django", "TensorFlow"]
+    },
+    {
+      "name": "database_system",
+      "pattern": "\\b(?:MySQL|PostgreSQL|MongoDB|Redis|Elasticsearch|Neo4j|SQLite|Oracle|SQL Server|Cassandra|DynamoDB)\\b",
+      "entity_type": "technology",
+      "confidence": 0.9,
+      "flags": 2,
+      "description": "Database management systems",
+      "examples": ["MySQL", "MongoDB", "Neo4j"]
+    },
+    {
+      "name": "cloud_service",
+      "pattern": "\\b(?:AWS|Azure|Google Cloud|GCP|Docker|Kubernetes|Heroku|Vercel|Netlify|Firebase)\\b",
+      "entity_type": "technology",
+      "confidence": 0.8,
+      "flags": 2,
+      "description": "Cloud platforms and services",
+      "examples": ["AWS", "Docker", "Kubernetes"]
+    },
+    {
+      "name": "api_endpoint",
+      "pattern": "(?:GET|POST|PUT|DELETE|PATCH)\\s+/[\\w/\\-\\{\\}]+",
+      "entity_type": "concept",
+      "confidence": 0.8,
+      "flags": 2,
+      "description": "API endpoints and HTTP methods",
+      "examples": ["GET /api/users", "POST /auth/login"]
+    },
+    {
+      "name": "function_method",
+      "pattern": "\\b[a-zA-Z_][a-zA-Z0-9_]*\\(\\)",
+      "entity_type": "concept",
+      "confidence": 0.7,
+      "flags": 2,
+      "description": "Function and method names",
+      "examples": ["getData()", "processRequest()"]
+    },
+    {
+      "name": "configuration_file",
+      "pattern": "\\b[\\w\\-]+\\.(?:json|yaml|yml|xml|ini|conf|config|env|properties)\\b",
+      "entity_type": "document",
+      "confidence": 0.8,
+      "flags": 2,
+      "description": "Configuration files",
+      "examples": ["config.json", "docker-compose.yml"]
+    },
+    {
+      "name": "version_number",
+      "pattern": "\\bv?\\d+\\.\\d+(?:\\.\\d+)?(?:-[a-zA-Z0-9\\-]+)?\\b",
+      "entity_type": "concept",
+      "confidence": 0.7,
+      "flags": 2,
+      "description": "Version numbers",
+      "examples": ["v1.2.3", "2.0.0-beta"]
+    }
+  ],
+  "relationship_patterns": [
+    {
+      "name": "implements_interface",
+      "pattern": "(\\w+)\\s+implements\\s+(\\w+)",
+      "relationship_type": "IMPLEMENTS",
+      "confidence": 0.9,
+      "source_group": 1,
+      "target_group": 2,
+      "flags": 2,
+      "description": "Class implements interface relationship",
+      "examples": ["UserService implements IUserService"]
+    },
+    {
+      "name": "extends_class",
+      "pattern": "(\\w+)\\s+extends\\s+(\\w+)",
+      "relationship_type": "EXTENDS",
+      "confidence": 0.9,
+      "source_group": 1,
+      "target_group": 2,
+      "flags": 2,
+      "description": "Class inheritance relationship",
+      "examples": ["AdminUser extends User"]
+    },
+    {
+      "name": "uses_technology",
+      "pattern": "(?:uses?|utilizing?|built with|powered by)\\s+([A-Za-z][A-Za-z0-9\\.\\+\\-\\s]+)",
+      "relationship_type": "USES",
+      "confidence": 0.8,
+      "source_group": 0,
+      "target_group": 1,
+      "flags": 2,
+      "description": "Technology usage relationship",
+      "examples": ["built with React", "uses PostgreSQL"]
+    },
+    {
+      "name": "depends_on",
+      "pattern": "(\\w+)\\s+(?:depends on|requires|needs)\\s+(\\w+)",
+      "relationship_type": "DEPENDS_ON",
+      "confidence": 0.8,
+      "source_group": 1,
+      "target_group": 2,
+      "flags": 2,
+      "description": "Dependency relationship",
+      "examples": ["Frontend depends on API", "Service requires Database"]
+    },
+    {
+      "name": "configures",
+      "pattern": "(\\w+)\\s+(?:configures?|sets up|initializes)\\s+(\\w+)",
+      "relationship_type": "CONFIGURES",
+      "confidence": 0.7,
+      "source_group": 1,
+      "target_group": 2,
+      "flags": 2,
+      "description": "Configuration relationship",
+      "examples": ["Docker configures environment", "Webpack configures build"]
+    }
+  ],
+  "graph_constraints": [
+    "CREATE CONSTRAINT tech_name_unique IF NOT EXISTS FOR (t:Technology) REQUIRE t.name IS UNIQUE",
+    "CREATE CONSTRAINT api_endpoint_unique IF NOT EXISTS FOR (a:APIEndpoint) REQUIRE a.path IS UNIQUE",
+    "CREATE INDEX tech_category_index IF NOT EXISTS FOR (t:Technology) ON (t.category)",
+    "CREATE INDEX version_number_index IF NOT EXISTS FOR (v:Version) ON (v.number)"
+  ],
+  "metadata": {
+    "version": "1.0",
+    "author": "Graph-Enhanced RAG System",
+    "created_at": "2024-01-01"
+  }
+}

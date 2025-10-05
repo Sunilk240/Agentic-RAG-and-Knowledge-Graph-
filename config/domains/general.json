@@ -1,0 +1,69 @@
+{
+  "domain_type": "general",
+  "name": "Legal Documents",
+  "description": "Custom domain for legal document processing",
+  "entity_types": [
+    "concept",
+    "document",
+    "person"
+  ],
+  "entity_patterns": [
+    {
+      "name": "legal_entity",
+      "pattern": "\\b(?:plaintiff|defendant|court|judge|jury|attorney|lawyer|counsel)\\b",
+      "entity_type": "person",
+      "confidence": 0.9,
+      "flags": 0,
+      "description": "Legal entities and roles",
+      "examples": []
+    },
+    {
+      "name": "legal_document",
+      "pattern": "\\b(?:contract|agreement|statute|regulation|ordinance|brief|motion|complaint)\\b",
+      "entity_type": "document",
+      "confidence": 0.8,
+      "flags": 0,
+      "description": "Legal documents and instruments",
+      "examples": []
+    },
+    {
+      "name": "legal_concept",
+      "pattern": "\\b(?:liability|negligence|damages|jurisdiction|precedent|due process)\\b",
+      "entity_type": "concept",
+      "confidence": 0.9,
+      "flags": 0,
+      "description": "Legal concepts and principles",
+      "examples": []
+    }
+  ],
+  "relationship_patterns": [
+    {
+      "name": "legal_action",
+      "pattern": "(\\w+)\\s+(?:sues|files against|brings action against)\\s+(\\w+)",
+      "relationship_type": "LEGAL_ACTION",
+      "confidence": 0.9,
+      "source_group": 1,
+      "target_group": 2,
+      "flags": 0,
+      "description": "Legal action relationship",
+      "examples": []
+    },
+    {
+      "name": "legal_precedent",
+      "pattern": "(\\w+)\\s+(?:cites|references|relies on)\\s+(\\w+)",
+      "relationship_type": "CITES",
+      "confidence": 0.8,
+      "source_group": 1,
+      "target_group": 2,
+      "flags": 0,
+      "description": "Legal precedent citation",
+      "examples": []
+    }
+  ],
+  "graph_constraints": [],
+  "metadata": {
+    "custom": true,
+    "created_at": "2024-01-01",
+    "version": "1.0"
+  }
+}
