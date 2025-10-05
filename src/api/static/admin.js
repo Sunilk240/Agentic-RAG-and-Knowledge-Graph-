@@ -4,13 +4,92 @@ const API_BASE_URL = window.location.protocol === 'file:'
     ? 'http://localhost:8000' 
     : window.location.origin;
 
+// Admin credentials
+const ADMIN_CREDENTIALS = {
+    username: 'Sunil',
+    password: 'Test0663'
+};
+
 // Global variables
 let currentDatabase = null;
 let databaseStats = null;
+let isAuthenticated = false;
 
 // Initialize admin portal
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Initializing Simplified Admin Portal');
+    
+    // Always show login modal first
+    showLoginModal();
+    
+    // Setup login form
+    setupLoginForm();
+});
+
+// Show login modal
+function showLoginModal() {
+    const loginModal = document.getElementById('adminLoginModal');
+    const adminContent = document.getElementById('adminContent');
+    
+    loginModal.style.display = 'flex';
+    adminContent.style.display = 'none';
+    
+    // Focus on username field
+    setTimeout(() => {
+        document.getElementById('adminUsername').focus();
+    }, 100);
+}
+
+// Setup login form
+function setupLoginForm() {
+    const loginForm = document.getElementById('adminLoginForm');
+    const loginError = document.getElementById('loginError');
+    
+    loginForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const username = document.getElementById('adminUsername').value;
+        const password = document.getElementById('adminPassword').value;
+        
+        // Validate credentials
+        if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
+            // Login successful
+            isAuthenticated = true;
+            hideLoginModal();
+            initializeAdminPortal();
+        } else {
+            // Login failed
+            loginError.style.display = 'flex';
+            document.getElementById('adminPassword').value = '';
+            document.getElementById('adminPassword').focus();
+            
+            // Hide error after 3 seconds
+            setTimeout(() => {
+                loginError.style.display = 'none';
+            }, 3000);
+        }
+    });
+    
+    // Handle Enter key on password field
+    document.getElementById('adminPassword').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            loginForm.dispatchEvent(new Event('submit'));
+        }
+    });
+}
+
+// Hide login modal and show admin content
+function hideLoginModal() {
+    const loginModal = document.getElementById('adminLoginModal');
+    const adminContent = document.getElementById('adminContent');
+    
+    loginModal.style.display = 'none';
+    adminContent.style.display = 'block';
+}
+
+// Initialize admin portal after successful login
+function initializeAdminPortal() {
+    console.log('Admin authenticated successfully');
     
     // Show access note if opened as file://
     if (window.location.protocol === 'file:') {
@@ -22,7 +101,25 @@ document.addEventListener('DOMContentLoaded', function() {
     
     checkSystemStatus();
     loadDatabaseStats();
-});
+}
+
+// Check if user is authenticated (for page refreshes)
+function checkAuthentication() {
+    // Always require login on page load/refresh
+    return false;
+}
+
+// Logout function
+function logout() {
+    isAuthenticated = false;
+    
+    // Clear form fields
+    document.getElementById('adminUsername').value = '';
+    document.getElementById('adminPassword').value = '';
+    
+    // Show login modal again
+    showLoginModal();
+}
 
 // Load database statistics
 async function loadDatabaseStats() {
