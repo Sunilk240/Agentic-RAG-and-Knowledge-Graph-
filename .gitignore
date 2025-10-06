@@ -210,3 +210,5 @@ docs/build/
 *.tmp
 *.temp
 .cache/
+
+venv_test/
